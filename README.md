@@ -44,6 +44,6 @@ We welcome contributions! If you'd like to improve the system:
 - Commit your changes (git commit -m "Added new feature")
 - Push to your branch and open a pull request
 ## 📜 License
-This project is licensed under the MIT License – meaning anyone can use, modify, and distribute the code while providing proper credit. See the full license here.
+This project is licensed under the MIT License – meaning anyone can use, modify, and distribute the code while providing proper credit. [See the full license here](https://github.com/dragon-udfly/Grievance-Portal/blob/main/LICENSE).
 ## 📬 Contact
 For inquiries or collaboration, feel free to connect via GitHub: [@dragon-udfly](https://github.com/dragon-udfly)
