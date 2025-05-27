@@ -20,13 +20,21 @@ The Grievance Portal is designed to provide students with a seamless online plat
 - Set up your environment variables (e.g., database connection strings).
 🔹 Steps to Run Locally
 ### Clone the repository
-```git clone https://github.com/dragon-udfly/Grievance-Portal.git```
+```bash 
+git clone https://github.com/dragon-udfly/Grievance-Portal.git
+```
 ### Navigate to the project directory
-```cd Grievance-Portal```
+```bash
+cd Grievance-Portal
+```
 ### Install dependencies
-```npm install```
+```bash
+npm install
+```
 ### Start the application
-```npm start```
+```bash
+npm start
+```
 
 ### 🔹 Prerequisites
 - Install **Node.js** and **MongoDB** on your machine.
