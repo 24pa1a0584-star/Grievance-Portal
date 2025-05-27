@@ -15,10 +15,10 @@ The Grievance Portal is designed to provide students with a seamless online plat
 - Frontend: React.js / Vue.js (Optional: Specify your actual framework)
 - Authentication: JWT / OAuth (If applicable)
 ## 📌 Installation & Setup
-🔹 Prerequisites
+### 🔹 Prerequisites
 - Install Node.js and MongoDB on your machine.
 - Set up your environment variables (e.g., database connection strings).
-🔹 Steps to Run Locally
+### 🔹 Steps to Run Locally
 ### Clone the repository
 ```bash 
 git clone https://github.com/dragon-udfly/Grievance-Portal.git
