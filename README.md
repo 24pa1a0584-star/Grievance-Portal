@@ -57,4 +57,4 @@ We welcome contributions! If you'd like to improve the system:
 ## 📜 License
 This project is licensed under the MIT License – meaning anyone can use, modify, and distribute the code while providing proper credit. See the full license here.
 ## 📬 Contact
-For inquiries or collaboration, feel free to connect via GitHub: @dragon-udfly
+For inquiries or collaboration, feel free to connect via GitHub: [@dragon-udfly](https://github.com/dragon-udfly)
