@@ -48,13 +48,13 @@ git clone https://github.com/dragon-udfly/Grievance-Portal.git
 
 
 Visit http://localhost:3000 to access the portal.
-💡 Contribution Guidelines
+## 💡 Contribution Guidelines
 We welcome contributions! If you'd like to improve the system:
 - Fork the repository
 - Create a new branch (feature-name)
 - Commit your changes (git commit -m "Added new feature")
 - Push to your branch and open a pull request
-📜 License
+## 📜 License
 This project is licensed under the MIT License – meaning anyone can use, modify, and distribute the code while providing proper credit. See the full license here.
-📬 Contact
+## 📬 Contact
 For inquiries or collaboration, feel free to connect via GitHub: @dragon-udfly
