@@ -1,20 +1,20 @@
-Grievance Portal
-A Student Grievance Redressal System for universities
-📌 Overview
+# Grievance Portal
+### A Student Grievance Redressal System for universities
+## 📌 Overview
 In a university environment, students may encounter various issues related to academics, administration, faculty, infrastructure, and sensitive matters such as ragging and bullying. Efficient and transparent grievance handling is crucial for fostering a safe and supportive learning environment.
 The Grievance Portal is designed to provide students with a seamless online platform for submitting grievances, tracking resolution status, and ensuring prompt action from relevant authorities.
-🎯 Key Features
-✅ Automated Grievance Routing – Ensures complaints reach the appropriate department.
-✅ Role-Based Access Control – Enables secure access for students, faculty, and administrators.
-✅ Real-Time Status Tracking – Allows students to monitor the progress of their grievance resolution.
-✅ Data-Driven Insights – Improves administrative efficiency through analytics.
-✅ Anonymous Reporting – Special provisions for ragging complaints ensure confidentiality and campus safety.
-🚀 Technologies Used
+## 🎯 Key Features
+-✅ *Automated Grievance Routing** – Ensures complaints reach the appropriate department.
+-✅ *Role-Based Access Control* – Enables secure access for students, faculty, and administrators.
+-✅ *Real-Time Status Tracking* – Allows students to monitor the progress of their grievance resolution.
+-✅ *Data-Driven Insights* – Improves administrative efficiency through analytics.
+-✅ *Anonymous Reporting* – Special provisions for ragging complaints ensure confidentiality and campus safety.
+## 🚀 Technologies Used
 - Backend: Node.js, Express.js
 - Database: MongoDB
 - Frontend: React.js / Vue.js (Optional: Specify your actual framework)
 - Authentication: JWT / OAuth (If applicable)
-📌 Installation & Setup
+## 📌 Installation & Setup
 🔹 Prerequisites
 - Install Node.js and MongoDB on your machine.
 - Set up your environment variables (e.g., database connection strings).
