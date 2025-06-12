@@ -19,3 +19,60 @@ body {
     text-decoration: none;
     padding: 14px 20px;
 }
+
+ .navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content h1 {
+    font-size: 48px;
+    margin: 0;
+}
+
+.content h1 span {
+    color: #00aaff;
+}
+
+.content p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.buttons a {
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: 2px solid white;
+    color: white;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.buttons a:hover {
+    background-color: white;
+    color: black;
+}
+
+.buttons .watch-video {
+    background-color: #00aaff;
+    border: none;
+}
+
+.buttons .watch-video:hover {
+    background-color: #0088cc;
+}
