@@ -6,9 +6,16 @@ body {
     color: white;
     text-align: center;
 }
+
 .navbar {
     display: flex;
     justify-content: space-between;
     padding: 20px;
     background: rgba(0, 0, 0, 0.5);
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 14px 20px;
 }
