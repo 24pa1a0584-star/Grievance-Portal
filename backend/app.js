@@ -7,9 +7,6 @@ const port= 5000;
 app.use(express.json());
 app.use('/register',registerRoute);
 
-app.get('/', (req, res) => {
-    res.send("Studnet Grievance Portal");
-});
 
 app.listen(port, ()=>{
     console.log(`Server running ${port}`);
