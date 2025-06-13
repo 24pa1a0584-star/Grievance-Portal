@@ -75,5 +75,15 @@ router.post('/data', async (req, res) => {
     }
 });
 
+router.get('/users', async (req, res) => {
+    try {
+        const users = await User.find(); // Retrieve all users from MongoDB
+        res.status(200).json(users); // Send users as JSON response
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching users", details: error.message });
+    }
+});
+
+
 
 module.exports=router;
