@@ -1,3 +1,4 @@
 # ignore these files 
 src*/
 *.hintrc
+backend/node_modules*/
