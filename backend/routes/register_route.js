@@ -1,4 +1,5 @@
 const express=require('express');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const router = express.Router();
 
@@ -7,22 +8,60 @@ router.get('/', (req, res) => {
 });
 
 // Register User (POST Request)
-router.post('/register', async (req, res) => {
-    try {
-        const { registrationNumber, fullName, email, password, academicYear, phone, faculty } = req.body;
+// router.post('/data', async (req, res) => {
+//     try {
+//         const { registrationNumber, fullName, email, password, academicYear, phone, faculty } = req.body;
 
-        // Check if user already exists
+//         // Check if user already exists
+//         const existingUser = await User.findOne({ email });
+//         if (existingUser) {
+//             return res.status(400).json({ message: "User already registered with this email!" });
+//         }
+
+//         // Hash the password
+//         const salt = await bcrypt.genSalt(10);
+//         const hashedPassword = await bcrypt.hash(password, salt);
+
+//         // Create new user with hashed password
+//         const newUser = new User({
+//             registrationNumber,
+//             fullName,
+//             email,
+//             password: hashedPassword,
+//             academicYear,
+//             phone,
+//             faculty
+//         });
+
+//         await newUser.save();
+//         res.status(201).json({ message: "User registered successfully!" });
+//     } catch (error) {
+//         res.status(500).json({ error: "Error registering user", details: error.message });
+//     }
+// });
+
+router.post('/data', async (req, res) => {
+    try {
+        console.log("Received registration request:", req.body); // Debugging log
+
+        const { registrationNumber, fullName, email, password, academicYear, phone, faculty } = req.body;
+        if (!registrationNumber || !fullName || !email || !password) {
+            return res.status(400).json({ message: "Missing required fields!" });
+        }
+
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: "User already registered with this email!" });
         }
 
-        // Create new user
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
         const newUser = new User({
             registrationNumber,
             fullName,
             email,
-            password, // Hash this for security (bcrypt recommended)
+            password: hashedPassword,
             academicYear,
             phone,
             faculty
@@ -31,6 +70,7 @@ router.post('/register', async (req, res) => {
         await newUser.save();
         res.status(201).json({ message: "User registered successfully!" });
     } catch (error) {
+        console.error("Error registering user:", error); // Log error details
         res.status(500).json({ error: "Error registering user", details: error.message });
     }
 });

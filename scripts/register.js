@@ -12,14 +12,19 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     };
 
     try {
-        const response = await fetch("http://localhost:5000/register", {
+        const response = await fetch("http://localhost:5000/register/data", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         });
 
         const result = await response.json();
-        alert(result.message); // Show response message
+        if (response.status === 201) {  
+            alert(result.message);
+            window.location.href = "../pages/login.html"; // Redirect to login page
+        } else {
+            alert("Registration failed: " + result.message);
+        }
     } catch (error) {
         alert("Error submitting registration: " + error.message);
     }
