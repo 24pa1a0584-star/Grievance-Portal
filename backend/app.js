@@ -7,6 +7,8 @@ const app= express();
 const port= 5000;
 
 app.use(express.json());
+const cors = require('cors');
+app.use(cors());
 app.use('/register',registerRoute);
 app.use('/login', loginRoute);
 
