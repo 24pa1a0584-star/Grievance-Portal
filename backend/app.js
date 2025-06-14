@@ -2,8 +2,8 @@ const express= require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const registerRoute= require('./routes/register_route');
-const loginRoute= require('./routes/login_route');
 const resetRoute = require('./routes/reset_route');
+const loginRoute = require('./routes/login_route');
 const app= express();
 const port= 5000;
 
@@ -11,9 +11,8 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 app.use('/register',registerRoute);
-app.use('/login', loginRoute);
 app.use('/reset', resetRoute);
-
+app.use('/login', loginRoute);
 
 console.log("MongoDB URI:", process.env.MONGO_URI);
 
