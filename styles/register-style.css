@@ -120,3 +120,11 @@ body {
 .back-button:hover {
     background-color: #1E40AF;
 }
+
+.show-password-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between checkbox and label */
+    margin-top: 10px; /* Adjust positioning */
+    font-size: 12px;
+}
