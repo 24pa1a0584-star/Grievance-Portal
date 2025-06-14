@@ -12,7 +12,7 @@ const cors = require('cors');
 app.use(cors());
 app.use('/register',registerRoute);
 app.use('/login', loginRoute);
-app.use('/', resetRoute);
+app.use('/reset', resetRoute);
 
 
 console.log("MongoDB URI:", process.env.MONGO_URI);
