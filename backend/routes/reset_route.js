@@ -19,6 +19,7 @@ router.post('/password', async (req, res) => {
         user.password = hashedPassword;
         await user.save();
 
+        console.log("Password reset successful!");
         res.status(200).json({ message: "Password reset successful!" });
     } catch (error) {
         res.status(500).json({ error: "Error resetting password", details: error.message });
