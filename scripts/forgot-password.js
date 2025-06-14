@@ -4,7 +4,7 @@ document.getElementById("forgotPasswordForm").addEventListener("submit", async f
     const formData = {
         email: document.getElementById("email").value,
         username: document.getElementById("username").value,
-        newPassword: document.getElementById("newPassword").value,
+        newPassword: document.getElementById("password").value,
         confirmPassword: document.getElementById("confirmPassword").value
     };
 
