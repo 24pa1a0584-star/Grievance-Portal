@@ -32,15 +32,21 @@
         <input type="email" id="email" placeholder="Enter email address" required>
       </div>
       <div class="row">
-        <div class="input-group">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" id="password" placeholder="Create password" required>
-        </div>
-        <div class="input-group">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" placeholder="Confirm password" required>
-        </div>
-      </div>
+  <div class="input-group">
+    <i class="fa-solid fa-lock"></i>
+    <input type="password" id="password" placeholder="Create password" required>
+  </div>
+  <div class="input-group">
+    <i class="fa-solid fa-lock"></i>
+    <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+  </div>
+</div>
+
+<!-- Show Password Checkbox -->
+<div class="show-password-container">
+  <input type="checkbox" id="showPassword">
+  <label for="showPassword">Show Password</label>
+</div>
       <div class="row">
         <div class="input-group">
           <i class="fa-solid fa-calendar-days"></i>
@@ -70,5 +76,6 @@
     </form>
   </div>
   <script src="../scripts/register.js"></script>
+  <script src="../scripts/show-password.js"></script>
 </body>
 </html>
