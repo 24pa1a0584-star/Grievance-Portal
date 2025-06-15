@@ -1,0 +1,95 @@
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eef4ff;
+      padding: 1rem;
+    }
+
+    a {
+      color: #6c63ff;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .complaint-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .status,
+    .priority {
+      padding: 0.4rem 0.8rem;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .status.in-progress {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status.pending {
+      background: #fdecea;
+      color: #d9534f;
+    }
+
+    .status.resolved {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .priority.medium {
+      background: #ffeeba;
+      color: #856404;
+    }
+
+    .priority.high {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .info-line {
+      font-size: 0.9rem;
+      color: #333;
+      margin-top: 0.5rem;
+    }
+
+    .response-box {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .btn-view {
+      float: right;
+      background: #6c63ff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .btn-view:hover {
+      background: #5a54e1;
+    }
