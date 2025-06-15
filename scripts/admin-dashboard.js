@@ -70,7 +70,7 @@ const adminCategory = "Technical Issue"; // Simulated role-based access
     function redirectToManage(index) {
       const selectedComplaint = complaints[index];
       localStorage.setItem("selectedComplaint", JSON.stringify(selectedComplaint));
-      window.location.href = "view-complaint-admin.html";
+      window.location.href = "admin-view-complaint.html";
     }
 
     function logout() {
