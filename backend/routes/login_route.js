@@ -4,6 +4,19 @@ const User = require('../models/User'); // Import User model
 const router = express.Router();
 const session = require('express-session');
 
+// login session
+router.get('/session', (req, res) => {
+    console.log("Session data in backend:", req.session); // Debugging log
+
+    if (!req.session.user) {
+        console.error("Session not found! Redirecting user.");
+        return res.status(401).json({ message: "Not logged in" });
+    }
+
+    console.log("Sending session data:", req.session.user);
+    res.status(200).json(req.session.user);
+});
+
 // Login Route
 router.post('/check', async (req, res) => {
     try {
@@ -17,9 +30,17 @@ router.post('/check', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(401).json({ message: "Invalid credentials!" });
 
-        req.session.user = { id: user._id, name: user.fullName, email: user.email, accountType: user.accountType };
+        req.session.user = { 
+            id: user._id, 
+            name: user.fullName, 
+            email: user.email, 
+            accountType: user.type,
+            regno: user.registrationNumber 
+        };
 
-        const isAdmin = user.accountType === "admin"; // Determine admin status
+        console.log("Session stored:", req.session.user);
+
+        const isAdmin = user.type === "admin"; // Determine admin status
         console.log("Account Type: Admin? "+ isAdmin);
         res.status(200).json({ message: "Login successful!", isAdmin });
 
