@@ -28,7 +28,7 @@ router.post('/check', async (req, res) => {
         req.session.user = { id: user._id, name: user.fullName, email: user.email, accountType: user.accountType };
 
         const isAdmin = user.accountType === "admin"; // Determine admin status
-
+        console.log("Account Type: Admin? "+ isAdmin);
         res.status(200).json({ message: "Login successful!", isAdmin });
 
     } catch (error) {
