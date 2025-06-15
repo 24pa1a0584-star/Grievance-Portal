@@ -1,6 +1,23 @@
-fetch("http://localhost:5000/login/session")
-    .then(response => response.json())
-    .then(user => {
-        if (!user.id) window.location.href = "login.html"; // Redirect if not logged in
+document.addEventListener("DOMContentLoaded", function() {
+    fetch("http://localhost:5000/login/session", {
+        method: "GET",
+        credentials: "include" // Ensure cookies are sent
     })
-    .catch(() => window.location.href = "login.html");
+        .then(response => response.json())
+        .then(user => {
+            console.log("Session Data Received:", user); // Debugging log
+
+            if (!user || !user.id) {
+                console.error("User session not found, redirecting to login.");
+                window.location.href = "login.html";
+            } else {
+                document.getElementById("name").textContent = user.name;
+                document.getElementById("username").textContent = user.email;
+                document.getElementById("faculty").textContent = user.type;
+            }
+        })
+        .catch(error => {
+            console.error("Session fetch error:", error);
+            window.location.href = "login.html";
+        });
+});
