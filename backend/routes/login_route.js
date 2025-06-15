@@ -38,13 +38,17 @@ router.post('/check', async (req, res) => {
         // Redirect based on account type
         const redirectPage = user.accountType === "admin" ? "../pages/admin-dashboard.html" : "../pages/student-dashboard.html";
         console.log("Redirecting user to:", redirectPage);
-        
+
         res.status(200).json({ message: "Login successful!", redirect: redirectPage });
 
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ error: "Error logging in", details: error.message });
     }
+});
+
+router.post('/', (req, res) => {
+    res.send("Login route is respoding.");
 });
 
 module.exports = router;
