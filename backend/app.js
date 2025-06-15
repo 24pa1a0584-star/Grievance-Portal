@@ -7,6 +7,16 @@ const loginRoute = require('./routes/login_route');
 const app= express();
 const port= 5000;
 
+const session = require('express-session');
+require('dotenv').config();
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false, httpOnly: true }
+}));
+
 app.use(express.json());
 app.use(express.static('pages'));
 const cors = require('cors');
