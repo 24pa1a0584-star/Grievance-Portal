@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 password: document.getElementById("password").value
             };
 
-            console.log("Submitting form with data:", formData); // Debugging log
-
             try {
                 const response = await fetch("http://localhost:5000/login/check", {
                     method: "POST",
@@ -20,10 +18,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
 
                 const result = await response.json();
+                console.log("Login response:", result);
 
                 if (response.status === 200) {
                     alert(result.message);
-                    window.location.href = result.redirect;
+
+                    // Redirect based on user type
+                    const dashboardPath = result.isAdmin ? "/pages/admin-dashboard.html" : "/pages/student-dashboard.html";
+                    window.location.href = window.location.origin + dashboardPath;
+                    console.log("Redirecting to:", window.location.origin + dashboardPath);
                 } else {
                     alert("Login failed: " + result.message);
                 }
