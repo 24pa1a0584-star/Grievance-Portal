@@ -4,14 +4,6 @@ const User = require('../models/User'); // Import User model
 const router = express.Router();
 const session = require('express-session');
 
-require('dotenv').config();
-
-router.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false }
-}));
 // Login Route
 router.post('/check', async (req, res) => {
     try {
