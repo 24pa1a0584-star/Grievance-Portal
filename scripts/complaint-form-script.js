@@ -1,8 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Category from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get("category") || "General Complaints";
-  document.getElementById("categoryDisplay").textContent = `Category: ${category}`;
+  // Get category from URL and set it
+const urlParams = new URLSearchParams(window.location.search);
+const category = urlParams.get("category") || "General Complaints";
+document.getElementById("categoryDisplay").textContent = `Category: ${formatCategoryName(category)}`;
+
+// Format category name for display (optional prettifying)
+function formatCategoryName(cat) {
+  switch(cat) {
+    case 'academic': return 'Academic Grievance';
+    case 'technical': return 'Technical Issues';
+    case 'disciplinary': return 'Disciplinary & Ragging Complaints';
+    case 'hostel': return 'Hostel & Facility Issues';
+    case 'financial': return 'Financial & Scholarship Concerns';
+    case 'anonymous': return 'Anonymous Complaints';
+    case 'general': return 'General Complaints';
+    default: return cat;
+  }
+}
+
+
 
   // Live character count
   const description = document.getElementById("description");
@@ -71,3 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get("category") || "General Complaints";
+  document.getElementById("categoryDisplay").textContent = `Category: ${formatCategoryName(category)}`;
+});
+
