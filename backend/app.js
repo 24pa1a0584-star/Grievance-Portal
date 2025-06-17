@@ -4,6 +4,8 @@ require('dotenv').config();
 const app= express();
 const port= 5000;
 
+app.use(express.json());
+
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5000', // Replace with your frontend origin
@@ -22,12 +24,9 @@ app.use(session({
 const registerRoute= require('./routes/register_route');
 const resetRoute = require('./routes/reset_route');
 const loginRoute = require('./routes/login_route');
-const adminRegisterRoute = require('./routes/admin-register_route');
+const adminRegisterRoute = require('./routes/admin_route');
 
-app.use(express.json());
 app.use(cors());
-
-
 app.use('/register',registerRoute);
 app.use('/reset', resetRoute);
 app.use('/login', loginRoute);
