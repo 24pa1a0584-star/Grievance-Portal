@@ -1,16 +1,12 @@
 const express= require('express');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 require('dotenv').config();
 const app= express();
 const port= 5000;
 
 app.use(express.json());
 
-const cors = require('cors');
-app.use(cors({
-    origin: 'http://localhost:5000', // Replace with your frontend origin
-    credentials: true
-}));
 app.use(express.static('pages'));
 
 const session = require('express-session');
@@ -18,7 +14,14 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true, maxAge: 5 * 60 * 1000 } // 1-day expiration TODO: Change this to 5 min or 10 min
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // Stores session in MongoDB
+    cookie: { secure: false, httpOnly: true, maxAge: 10 * 60 * 1000 }
+}));
+
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:5500', // Replace with your frontend origin
+    credentials: true
 }));
 
 const registerRoute= require('./routes/register_route');
@@ -26,7 +29,6 @@ const resetRoute = require('./routes/reset_route');
 const loginRoute = require('./routes/login_route');
 const adminRegisterRoute = require('./routes/admin_route');
 
-app.use(cors());
 app.use('/register',registerRoute);
 app.use('/reset', resetRoute);
 app.use('/login', loginRoute);
