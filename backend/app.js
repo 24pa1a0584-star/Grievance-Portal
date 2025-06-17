@@ -4,6 +4,13 @@ require('dotenv').config();
 const app= express();
 const port= 5000;
 
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:5000', // Replace with your frontend origin
+    credentials: true
+}));
+app.use(express.static('pages'));
+
 const session = require('express-session');
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -15,14 +22,16 @@ app.use(session({
 const registerRoute= require('./routes/register_route');
 const resetRoute = require('./routes/reset_route');
 const loginRoute = require('./routes/login_route');
+const adminRegisterRoute = require('./routes/admin-register_route');
 
 app.use(express.json());
-app.use(express.static('pages'));
-const cors = require('cors');
 app.use(cors());
+
+
 app.use('/register',registerRoute);
 app.use('/reset', resetRoute);
 app.use('/login', loginRoute);
+app.use('/admin', adminRegisterRoute);
 
 console.log("MongoDB URI:", process.env.MONGO_URI);
 
