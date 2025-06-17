@@ -22,16 +22,16 @@
     <h1>Admin Registration</h1>
     <p>Create an account to manage complaints</p>
 
-    <form>
-      <input type="text" placeholder="Full Name" required />
-      <input type="email" placeholder="Email Address" required />
-      <input type="password" placeholder="Password" required />
-      <input type="text" placeholder="Position (e.g., Proctor, Dean)" required />
-      <input type="tel" placeholder="Phone Number" pattern="[0-9]{10}" required />
-      <input type="text" placeholder="Faculty (e.g., Engineering)" required />
-      <input type="text" placeholder="Department (e.g., Computer Science)" required />
-      <button type="submit" class="btn">Register as Admin</button>
-    </form>
+<form id="adminRegisterForm">
+  <input type="text" id="fullname" placeholder="Full Name" required />
+  <input type="email" id="email" placeholder="Email Address" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <input type="text" id="position" placeholder="Position (e.g., Proctor, Dean)" required />
+  <input type="tel" id="phonenumber" placeholder="Phone Number" pattern="[0-9]{10}" required />
+  <input type="text" id="faculty" placeholder="Faculty (e.g., Engineering)" required />
+  <input type="text" id="department" placeholder="Department (e.g., Computer Science)" required />
+  <button type="submit" class="btn">Register as Admin</button>
+</form>
 
     <div class="notice">
       <strong>Important Note</strong>
