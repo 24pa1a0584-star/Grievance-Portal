@@ -16,7 +16,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 } // 1-day expiration TODO: Change this to 5 min or 10 min
+    cookie: { secure: false, httpOnly: true, maxAge: 5 * 60 * 1000 } // 1-day expiration TODO: Change this to 5 min or 10 min
 }));
 
 const registerRoute= require('./routes/register_route');
