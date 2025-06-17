@@ -15,7 +15,7 @@ router.post('/data', async (req, res) => {
 
         const existingUser = await Admin.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: "Admin Added!" });
+            return res.status(400).json({ message: "Admin already exists!" });
         }
 
         const salt = await bcrypt.genSalt(10);
