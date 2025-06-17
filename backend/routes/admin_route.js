@@ -9,13 +9,13 @@ router.post('/data', async (req, res) => {
         console.log("Received registration request:", req.body); // Debugging log
 
         const { fullname, email, password, position, phonenumber, faculty, department } = req.body;
-        if (!fullname || !email || !password|| !position|| !phonenumber) {
+        if (!fullname || !email || !password || !position || !phonenumber || !faculty || !department) {
             return res.status(400).json({ message: "Missing required fields!" });
         }
 
         const existingUser = await Admin.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: "Admin Added!" });
+            return res.status(400).json({ message: "Admin already exists!" });
         }
 
         const salt = await bcrypt.genSalt(10);
