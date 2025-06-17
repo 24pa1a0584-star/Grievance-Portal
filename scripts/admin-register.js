@@ -23,7 +23,7 @@ document.getElementById("adminRegisterForm").addEventListener("submit", async fu
 
         if (response.ok) {
             alert(result.message); // Show success message
-            window.location.href = "admin-login.html"; // Redirect to login page
+            window.location.href = "login.html"; // Redirect to login page
         } else {
             alert(result.message || "Registration failed.");
         }
