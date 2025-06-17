@@ -16,7 +16,11 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+<<<<<<< HEAD
     "mongoose": "^8.16.0",
+=======
+    "mongoose": "^8.15.2",
+>>>>>>> 4cb408eae06d0a3da35ea1d4f9dfb144709886ac
     "nodemon": "^3.1.10"
   }
 }
