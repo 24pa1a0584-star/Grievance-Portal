@@ -9,7 +9,7 @@ router.post('/data', async (req, res) => {
         console.log("Received registration request:", req.body); // Debugging log
 
         const { fullname, email, password, position, phonenumber, faculty, department } = req.body;
-        if (!fullname || !email || !password || !position || !phonenumber || !faculty || !department) {
+        if (!fullname || !email || !password || !position || !phonenumber) {
             return res.status(400).json({ message: "Missing required fields!" });
         }
 
