@@ -24,8 +24,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert(result.message);
 
                     // Redirect based on user type
-                    const dashboardPath = result.isAdmin ? "/pages/admin-dashboard.html" : "/pages/student-dashboard.html";
-                    window.location.href = window.location.origin + dashboardPath;
+                    //const dashboardPath = result.isAdmin ? "/pages/admin-dashboard.html" : "/pages/student-dashboard.html";
+                    //window.location.href = window.location.origin + dashboardPath;
+                    
+
                     console.log("Redirecting to:", window.location.origin + dashboardPath);
                 } else {
                     alert("Login failed: " + result.message);

@@ -31,16 +31,16 @@ router.post('/check', async (req, res) => {
         if (!isMatch) return res.status(401).json({ message: "Invalid credentials!" });
 
         req.session.user = { 
-            id: user._id, 
-            name: user.fullName, 
-            email: user.email, 
-            accountType: user.type,
-            regno: user.registrationNumber 
-        };
+        id: user._id, 
+        name: user.fullName, 
+        email: user.email, 
+        faculty: user.faculty,
+        regno: user.registrationNumber 
+    };
 
         console.log("Session stored:", req.session.user);
 
-        const isAdmin = user.type === "admin"; // Determine admin status
+        const isAdmin = user.faculty === "Admin Faculty" || false; // or some condition
         console.log("Account Type: Admin? "+ isAdmin);
         res.status(200).json({ message: "Login successful!", isAdmin });
 
