@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 const response = await fetch("http://localhost:5000/login/check", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify(formData),
+                    credentials: "include" // ✅ Ensure session cookies are sent
                 });
 
                 const result = await response.json();
@@ -23,9 +24,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (response.status === 200) {
                     alert(result.message);
 
-                    const dashboardPath = result.isAdmin ? "/pages/admin-dashboard.html" : "/pages/student-dashboard.html";
+                    // ✅ Update the redirect path to point to the backend
+                    const dashboardPath = result.isAdmin 
+                        ? "/html/admin-dashboard.html" 
+                        : "/html/student-dashboard.html"; 
+
                     window.location.href = window.location.origin + dashboardPath;
-                    
+
                     console.log("Redirecting to:", window.location.origin + dashboardPath);
                 } else {
                     alert("Login failed: " + result.message);

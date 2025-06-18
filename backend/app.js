@@ -31,7 +31,7 @@ app.use(session({
 
 // ✅ Apply CORS After Session Setup
 app.use(cors({
-    origin: "*", // ✅ Ensure this matches your frontend URL
+    origin: "http://localhost:5500", // ✅ Ensure this matches your frontend URL
     credentials: true
 }));
 
