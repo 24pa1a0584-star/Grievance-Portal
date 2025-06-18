@@ -2,8 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User'); // Import User model
 const router = express.Router();
-const session = require('express-session');
-
+const session = require("express-session");
 // login session
 router.get('/session', (req, res) => {
     console.log("Session data in backend:", req.session); // Debugging log
