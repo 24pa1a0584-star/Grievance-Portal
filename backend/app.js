@@ -10,19 +10,19 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.static("pages"));
-
-// ✅ Apply Session Middleware Before CORS
 app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // ✅ Persistent session storage
-    cookie: { secure: false, httpOnly: true, maxAge: 10 * 60 * 1000 }
+  secret:  process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // true if HTTPS
+    maxAge: 1000 * 60 * 60 * 24, // 1 day, for example
+  }
 }));
 
 // ✅ Apply CORS After Session Setup
 app.use(cors({
-    origin: "*", // ✅ Ensure this matches your frontend URL
+    origin: "http://127.0.0.1:5000", // ✅ Ensure this matches your frontend URL
     credentials: true
 }));
 
