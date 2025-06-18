@@ -22,7 +22,7 @@
 //         });
 // });
 
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
   fetch("http://localhost:5000/login/session", {
     method: "GET",
     credentials: "include"  // Send cookies with request
@@ -40,4 +40,30 @@ document.addEventListener("DOMContentLoaded", function() {
       alert("Session expired or not logged in.");
       window.location.href = "login.html";
     });
+});*/
+
+document.addEventListener("DOMContentLoaded", function() {
+  fetch("http://localhost:5000/login/session", {
+    method: "GET",
+    credentials: "include"  // Send cookies with request
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("Not authenticated");
+      return response.json();
+    })
+    .then(user => {
+      // Safely handle missing data
+      const name = user.name || "Student";
+      const regno = user.regno || "Unknown";
+      const faculty = user.accountType || "N/A";
+
+      document.getElementById("name").textContent = name;
+      document.getElementById("username").textContent = regno;
+      document.getElementById("faculty").textContent = faculty;
+    })
+    .catch(() => {
+      alert("Session expired or not logged in.");
+      window.location.href = "login.html";
+    });
 });
+
