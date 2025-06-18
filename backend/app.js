@@ -31,12 +31,14 @@ const registerRoute = require("./routes/register_route");
 const resetRoute = require("./routes/reset_route");
 const loginRoute = require("./routes/login_route");
 const adminRegisterRoute = require("./routes/admin_route");
+const adminRequest = require("./routes/admin_request");
 
 // ✅ Route Setup
 app.use("/register", registerRoute);
 app.use("/reset", resetRoute);
 app.use("/login", loginRoute);
 app.use("/admin", adminRegisterRoute);
+app.use("/admin-request", adminRequest);
 
 console.log("MongoDB URI:", process.env.MONGO_URI);
 
@@ -44,6 +46,7 @@ console.log("MongoDB URI:", process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
+    // serverSelectionTimeoutMS: 5000
 }).then(() => {
     console.log("✅ Successfully connected to MongoDB Atlas!");
 }).catch(error => {
