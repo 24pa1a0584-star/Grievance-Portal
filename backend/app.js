@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 const path = require("path");
-app.use(express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
+app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
 
 // Add: the session
 app.use(session({
@@ -31,10 +31,10 @@ app.use(session({
 // Added session
 
 app.use(cors({
-    origin: "http://127.0.0.1:5500", // ✅ Some browsers use 127.0.0.1 instead of localhost
+    origin: "http://127.0.0.1:5500", // ✅ Ensure it matches your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true  // ✅ Ensures session cookies are sent
+    allowedHeaders: ["Content-Type"],
+    credentials: true  // ✅ Enables session cookies
 }));
 
 // ✅ Import Routes
