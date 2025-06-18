@@ -1,69 +1,39 @@
-// document.addEventListener("DOMContentLoaded", function() {
-//     fetch("http://localhost:5000/login/session", {
-//         method: "GET",
-//         credentials: "include" // Ensure cookies are sent
-//     })
-//         .then(response => response.json())
-//         .then(user => {
-//             console.log("Session Data Received:", user); // Debugging log
-
-//             if (!user || !user.id) {
-//                 console.error("User session not found, redirecting to login.");
-//                 window.location.href = "login.html";
-//             } else {
-//                 document.getElementById("name").textContent = user.name;
-//                 document.getElementById("username").textContent = user.email;
-//                 document.getElementById("faculty").textContent = user.type;
-//             }
-//         })
-//         .catch(error => {
-//             console.error("Session fetch error:", error);
-//             window.location.href = "login.html";
-//         });
-// });
-
-/*document.addEventListener("DOMContentLoaded", function() {
-  fetch("http://localhost:5000/login/session", {
-    method: "GET",
-    credentials: "include"  // Send cookies with request
-  })
-    .then(response => {
-      if (!response.ok) throw new Error("Not authenticated");
-      return response.json();
-    })
-    .then(user => {
-      document.getElementById("name").textContent = user.name;
-      document.getElementById("username").textContent = user.email;
-      document.getElementById("faculty").textContent = user.type;
-    })
-    .catch(() => {
-      alert("Session expired or not logged in.");
-      window.location.href = "login.html";
-    });
-});*/
-
 document.addEventListener("DOMContentLoaded", function() {
   fetch("http://localhost:5000/login/session", {
     method: "GET",
-    credentials: "include"  // Send cookies with request
+    credentials: "include" // ✅ Ensures session data is sent
   })
-    .then(response => {
-      if (!response.ok) throw new Error("Not authenticated");
-      return response.json();
-    })
-    .then(user => {
-      // Safely handle missing data
-      const name = user.name || "Student";
-      const regno = user.regno || "Unknown";
-      const faculty = user.accountType || "N/A";
+  .then(response => {
+    if (!response.ok) throw new Error("Not authenticated");
+    return response.json();
+  })
+  .then(user => {
+    if (!user || !user.name) {
+      throw new Error("Session expired or invalid.");
+    }
 
-      document.getElementById("name").textContent = name;
-      document.getElementById("username").textContent = regno;
-      document.getElementById("faculty").textContent = faculty;
-    })
-    .catch(() => {
-      alert("Session expired or not logged in.");
-      window.location.href = "login.html";
-    });
+    document.getElementById("name").textContent = user.name;
+    document.getElementById("username").textContent = user.regno;
+    document.getElementById("faculty").textContent = user.faculty;
+  })
+  .catch(() => {
+    alert("Session expired or not logged in.");
+    window.location.href = "http://localhost:5500/pages/login.html"; // ✅ Redirect to correct login page
+  });
 });
 
+// logout button 
+document.getElementById("logout").addEventListener("click", async function() {
+    try {
+        const response = await fetch("http://localhost:5000/login/logout", {
+            method: "POST",
+            credentials: "include"
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        window.location.href = "http://localhost:5500/pages/login.html"; // ✅ Redirect after logout
+    } catch (error) {
+        console.error("Logout failed:", error);
+    }
+});
