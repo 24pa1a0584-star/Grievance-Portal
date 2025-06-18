@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(formData),
-                    credentials: "include" // ✅ Ensure session cookies are sent
+                    credentials: "include" // ✅ Ensures session cookies are sent
                 });
 
                 const result = await response.json();
@@ -26,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     // ✅ Update the redirect path to point to the backend
                     const dashboardPath = result.isAdmin 
-                        ? "/html/admin-dashboard.html" 
-                        : "/html/student-dashboard.html"; 
+                        ? "/pages/admin-dashboard.html" 
+                        : "/pages/student-dashboard.html"; 
 
                     window.location.href = window.location.origin + dashboardPath;
 

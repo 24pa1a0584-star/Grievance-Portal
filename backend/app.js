@@ -9,7 +9,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(express.static("pages"));
+const path = require("path");
+app.use(express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
 
 // Add: the session
 app.use(session({
@@ -19,7 +20,7 @@ app.use(session({
   store: MongoStore.create({ 
     mongoUrl: process.env.MONGO_URI, // ✅ Connects sessions to MongoDB
     collectionName: "sessions", // ✅ Stores session data in "sessions" collection
-    ttl: 60 * 60 // ✅ Session expires in 1 hour
+    ttl: 20 * 60 
   }),
   cookie: {
     secure: false, // true in production with HTTPS
@@ -29,10 +30,11 @@ app.use(session({
 }));
 // Added session
 
-// ✅ Apply CORS After Session Setup
 app.use(cors({
-    origin: "http://localhost:5500", // ✅ Ensure this matches your frontend URL
-    credentials: true
+    origin: "http://127.0.0.1:5500", // ✅ Some browsers use 127.0.0.1 instead of localhost
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true  // ✅ Ensures session cookies are sent
 }));
 
 // ✅ Import Routes
@@ -49,7 +51,7 @@ app.use("/login", loginRoute);
 app.use("/admin", adminRegisterRoute);
 app.use("/admin-request", adminRequest);
 
-console.log("MongoDB URI:", process.env.MONGO_URI);
+// console.log("MongoDB URI:", process.env.MONGO_URI);
 
 // ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
