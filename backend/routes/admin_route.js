@@ -23,7 +23,7 @@ router.post('/data', async (req, res) => {
         console.log("Hashed password:", hashedPassword); // Debugging log
 
         const newUser = new Admin({
-            fullname, email, password : hashedPassword, position, phonenumber, faculty, department
+            fullname, email, password : hashedPassword, position, phonenumber
         });
 
         await newUser.save();
