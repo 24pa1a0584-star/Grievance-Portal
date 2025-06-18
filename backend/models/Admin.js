@@ -6,8 +6,8 @@ const adminSchema = new mongoose.Schema({
     password: { type: String, required: true },
     position: { type: String, required: true, unique: true },
     phonenumber: { type: String, required: true },
-    faculty: { type: String, required: true },
-    department: { type: String, required: true },
+    faculty: { type: String},
+    department: { type: String },
     
 });
 
