@@ -10,19 +10,28 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.static("pages"));
+
+// Add: the session
 app.use(session({
-  secret:  process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,  // Keep your session secret secure
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({ 
+    mongoUrl: process.env.MONGO_URI, // ✅ Connects sessions to MongoDB
+    collectionName: "sessions", // ✅ Stores session data in "sessions" collection
+    ttl: 60 * 60 // ✅ Session expires in 1 hour
+  }),
   cookie: {
-    secure: false, // true if HTTPS
-    maxAge: 1000 * 60 * 60, // 24 days
+    secure: false, // true in production with HTTPS
+    httpOnly: true, // Prevents client-side access
+    maxAge: 20 * 60 * 1000 // 20 min
   }
 }));
+// Added session
 
 // ✅ Apply CORS After Session Setup
 app.use(cors({
-    origin: "http://127.0.0.1:5000", // ✅ Ensure this matches your frontend URL
+    origin: "*", // ✅ Ensure this matches your frontend URL
     credentials: true
 }));
 
@@ -57,54 +66,3 @@ mongoose.connect(process.env.MONGO_URI, {
 app.listen(port, () => {
     console.log(`🚀 Server running on port ${port}`);
 });
-// const express= require('express');
-// const mongoose = require('mongoose');
-// const MongoStore = require('connect-mongo');
-// require('dotenv').config();
-// const app= express();
-// const port= 5000;
-
-// app.use(express.json());
-
-// app.use(express.static('pages'));
-
-// const session = require('express-session');
-// app.use(session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }), // Stores session in MongoDB
-//     cookie: { secure: false, httpOnly: true, maxAge: 10 * 60 * 1000 }
-// }));
-
-// const cors = require('cors');
-// app.use(cors({
-//     origin: 'http://localhost:5500', // Replace with your frontend origin
-//     credentials: true
-// }));
-
-// const registerRoute= require('./routes/register_route');
-// const resetRoute = require('./routes/reset_route');
-// const loginRoute = require('./routes/login_route');
-// const adminRegisterRoute = require('./routes/admin_route');
-
-// app.use('/register',registerRoute);
-// app.use('/reset', resetRoute);
-// app.use('/login', loginRoute);
-// app.use('/admin', adminRegisterRoute);
-
-// console.log("MongoDB URI:", process.env.MONGO_URI);
-
-// mongoose.connect(process.env.MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }).then(() => {
-//     console.log("Connected to MongoDB Atlas");
-// }).catch(error => {
-//     console.error("MongoDB Connection Error:", error);
-// });
-
-
-// app.listen(port, ()=>{
-//     console.log(`Server running ${port}`);
-// });
