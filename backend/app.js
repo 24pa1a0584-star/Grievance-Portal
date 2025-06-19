@@ -2,41 +2,41 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 global.userSessions = {}; // ✅ Global JSON variable to store session data
-const session = require("express-session");
 const cors = require("cors");
+const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 const app = express();
 const port = process.env.PORT || 5000;
-
-app.use(express.json());
-const path = require("path");
-// app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
-
-// Add: the session
-app.use(session({
-  secret: process.env.SESSION_SECRET,  // Keep your session secret secure
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ 
-    mongoUrl: process.env.MONGO_URI, // ✅ Connects sessions to MongoDB
-    collectionName: "sessions", // ✅ Stores session data in "sessions" collection
-    ttl: 20 * 60 
-    }),
-    cookie: {
-    secure: false, // true in production with HTTPS
-    httpOnly: true, // Prevents client-side access
-    maxAge: 20 * 60 * 1000 // 20 min
-    }
-}));
-// Added session
-
+// Added: cors
 app.use(cors({
     origin: "http://127.0.0.1:5500", // ✅ Ensure it matches your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
     credentials: true  // ✅ Enables session cookies
 }));
+
+// Add: the session
+app.use(session({
+    secret: process.env.SESSION_SECRET,  // Keep your session secret secure
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ 
+        mongoUrl: process.env.MONGO_URI, // ✅ Connects sessions to MongoDB
+        collectionName: "sessions", // ✅ Stores session data in "sessions" collection
+        ttl: 20 * 60 
+    }),
+    cookie: {
+        secure: false, // true in production with HTTPS
+        httpOnly: true, // Prevents client-side access
+        maxAge: 20 * 60 * 1000 // 20 min
+    }
+}));
+// Added session
+
+app.use(express.json());
+const path = require("path");
+// app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -58,6 +58,7 @@ app.use("/login", loginRoute);
 app.use("/admin", adminRegisterRoute);
 app.use("/admin-request", adminRequest);
 app.use('/admin', adminLoginRoute);
+app.use('/send-complaint', complaintRoute);
 
 // console.log("MongoDB URI:", process.env.MONGO_URI);
 
