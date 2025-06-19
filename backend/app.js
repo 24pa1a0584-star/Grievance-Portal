@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 const path = require("path");
-// app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Add: the session
 app.use(session({
@@ -49,6 +49,8 @@ const loginRoute = require("./routes/login_route");
 const adminRegisterRoute = require("./routes/admin_route");
 const adminRequest = require("./routes/admin_request");
 const adminLoginRoute = require('./routes/admin_login_route');
+const complaintRoute = require('./routes/complaint_route');
+
 
 // ✅ Route Setup
 app.use("/register", registerRoute);
@@ -57,7 +59,7 @@ app.use("/login", loginRoute);
 app.use("/admin", adminRegisterRoute);
 app.use("/admin-request", adminRequest);
 app.use('/admin', adminLoginRoute);
-
+app.use('/complaint', complaintRoute);
 // console.log("MongoDB URI:", process.env.MONGO_URI);
 
 // ✅ Connect to MongoDB

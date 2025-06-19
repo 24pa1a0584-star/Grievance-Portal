@@ -40,6 +40,8 @@ const complaintSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  studentName: { type: String },
+studentFaculty: { type: String },
 });
 
 module.exports = mongoose.model("Complaint", complaintSchema);
