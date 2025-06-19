@@ -39,7 +39,7 @@
 // });
 document.addEventListener("DOMContentLoaded", function () {
   // ✅ Fetch session info from global-session route
-  fetch("http://localhost:5000/login/global-session", {
+  fetch("http://localhost:5000/login/latest-session", {
     method: "GET",
     credentials: "include"
   })
