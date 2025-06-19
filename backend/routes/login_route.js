@@ -6,7 +6,7 @@ const UserSession = require('../models/userSession');
 let sessionLoad= {};
 // login session
 // router.get('/session', (req, res) => {
-//     console.log("Session data in backend:", req.session); // ✅ Debugging log
+//     console.log("Session data in backend:", req.session); // Debugging log
 
 //     if (!req.session.user) {
 //         console.error("❌ Session not found! Redirecting user.");
@@ -18,8 +18,8 @@ let sessionLoad= {};
 // });
 
 router.get("/session", (req, res) => {
-    console.log("Session cookie data:", req.session.cookie); // ✅ Logs cookie details
-    console.log("Stored session data:", req.session.user); // ✅ Logs user data
+    console.log("Session cookie data:", req.session.cookie); // Logs cookie details
+    console.log("Stored session data:", req.session.user); // Logs user data
 
     if (!req.session.user) {
         return res.status(401).json({ message: "Session expired or not logged in." });
@@ -87,12 +87,12 @@ router.post("/logout", async (req, res) => {
     try {
         if (!req.session.user) return res.status(401).json({ message: "Not logged in!" });
 
-        delete global.userSessions[req.session.user.id]; // ✅ Remove user session from global storage
-        await UserSession.deleteOne({ userId: req.session.user.id }); // ✅ Remove session from MongoDB
+        delete global.userSessions[req.session.user.id]; // Remove user session from global storage
+        await UserSession.deleteOne({ userId: req.session.user.id }); // Remove session from MongoDB
 
         req.session.destroy(err => {
             if (err) return res.status(500).json({ message: "Logout failed" });
-            res.clearCookie("connect.sid"); // ✅ Clears session cookie
+            res.clearCookie("connect.sid"); // Clears session cookie
             res.status(200).json({ message: "Logged out successfully!" });
         });
 
