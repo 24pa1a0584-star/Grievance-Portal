@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
   fetch("http://localhost:5000/login/session", {
     method: "GET",
     credentials: "include" // ✅ Ensures session data is sent
-  })
+})
   .then(response => {
     if (!response.ok) throw new Error("Not authenticated");
     return response.json();

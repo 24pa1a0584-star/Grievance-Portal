@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User'); // Import User model
 const router = express.Router();
-const session = require("express-session");
+const UserSession = require('../models/userSession');
 // login session
 router.get('/session', (req, res) => {
     console.log("Session data in backend:", req.session); // ✅ Debugging log
@@ -32,10 +32,25 @@ router.post('/check', async (req, res) => {
             name: user.fullName,  
             email: user.email,  
             faculty: user.faculty,  
-            regno: user.registrationNumber  
+            regno: user.registrationNumber,  
+            loginTime: new Date() // ✅ Store login timestamp
         };
 
         console.log("✅ Session stored:", req.session.user);
+
+        // 🔥 Save session details to MongoDB (`userSession` collection)
+        const newSession = new UserSession({
+            userId: user._id,
+            name: user.fullName,
+            email: user.email,
+            faculty: user.faculty,
+            regno: user.registrationNumber,
+            sessionData: req.session.user,
+            loginTime: req.session.user.loginTime
+        });
+
+        await newSession.save(); // ✅ Insert session into MongoDB
+
         res.status(200).json({ message: "Login successful!", user: req.session.user });
 
     } catch (error) {
@@ -43,6 +58,7 @@ router.post('/check', async (req, res) => {
         res.status(500).json({ error: "Error logging in", details: error.message });
     }
 });
+
 
 router.post('/', (req, res) => {
     res.send("Login route is respoding.");

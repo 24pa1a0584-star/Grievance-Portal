@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (response.status === 200) {
                     alert(result.message);
-
+                    
                     // ✅ Update the redirect path to point to the backend
-                const dashboardPath = result.isAdmin 
-                ? "/admin-dashboard.html" 
-                : "/student-dashboard.html"; 
+                    const dashboardPath = result.isAdmin 
+                ? "/pages/admin-dashboard.html" 
+                : "/pages/student-dashboard.html"; 
 
                 window.location.href = window.location.origin + dashboardPath;
 

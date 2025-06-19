@@ -15,18 +15,18 @@ app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Acce
 // Add: the session
 app.use(session({
   secret: process.env.SESSION_SECRET,  // Keep your session secret secure
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ 
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ 
     mongoUrl: process.env.MONGO_URI, // ✅ Connects sessions to MongoDB
     collectionName: "sessions", // ✅ Stores session data in "sessions" collection
     ttl: 20 * 60 
-  }),
-  cookie: {
+    }),
+    cookie: {
     secure: false, // true in production with HTTPS
     httpOnly: true, // Prevents client-side access
     maxAge: 20 * 60 * 1000 // 20 min
-  }
+    }
 }));
 // Added session
 
