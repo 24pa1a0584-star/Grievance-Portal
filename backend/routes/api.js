@@ -5,4 +5,4 @@ router.get("/", (req, res) => {
     res.send("API is working!");
 });
 
-module.exports = router; // ✅ Must export a function
+module.exports = router; 
