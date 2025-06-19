@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+global.userSessions = {}; // ✅ Global JSON variable to store session data
 const session = require("express-session");
 const cors = require("cors");
 const MongoStore = require("connect-mongo");
@@ -10,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 const path = require("path");
-app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
+// app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
 
 // Add: the session
 app.use(session({

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-  fetch("http://localhost:5000/login/session", {
+  fetch("http://localhost:5000/login//global-session", {
     method: "GET",
     credentials: "include" // ✅ Ensures session data is sent
 })
