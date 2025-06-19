@@ -95,3 +95,16 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("categoryDisplay").textContent = `Category: ${formatCategoryName(category)}`;
 });
 
+document.getElementById("evidence").addEventListener("change", function () {
+      const fileList = document.getElementById("fileList");
+      fileList.innerHTML = ""; // Clear previous
+
+      Array.from(this.files).forEach(file => {
+        const li = document.createElement("li");
+        li.textContent = file.name;
+        li.style.fontSize = "14px";
+        li.style.color = "#333";
+        li.style.marginTop = "4px";
+        fileList.appendChild(li);
+      });
+    });

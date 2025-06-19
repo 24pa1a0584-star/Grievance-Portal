@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.status === 200) {
         alert("Login successful!");
-        window.location.href = "admin-dashboard.html"; // Redirect to dashboard
+        window.location.href = "http://localhost:5000/pages/admin-dashboard.html"; // Redirect to dashboard
       } else {
         alert(result.message || "Login failed");
       }

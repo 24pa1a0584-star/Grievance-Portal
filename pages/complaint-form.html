@@ -12,13 +12,13 @@
 </head>
 <body>
 
-  <a href="complaint-category.html" class="back-link">← Back to Categories</a>
+ <a href="complaint-category.html" class="back-link">← Back to Categories</a>
 
   <div class="container">
     <h1>Submit Complaint</h1>
     <center><div class="category-label" id="categoryDisplay"></div></center>
 
-    <form id="complaintForm">
+    <form id="complaintForm" enctype="multipart/form-data">
       <label for="title">Complaint Title *</label>
       <input type="text" id="title" name="title" required placeholder="Enter a clear and concise title for your complaint">
 
@@ -40,6 +40,7 @@
         <label class="choose-btn" for="evidence">Choose Files</label>
         <input type="file" id="evidence" name="evidence" multiple accept=".jpg,.png,.pdf,.doc,.docx">
         <div class="info-text">Supported formats: JPG, PNG, PDF, DOC, DOCX (Max 10MB each)</div>
+        <ul id="fileList" class="file-list"></ul> <!-- ✅ File name list -->
       </div>
 
       <div class="btn-group">
@@ -48,6 +49,7 @@
       </div>
     </form>
   </div>
+
 
   <script src="../scripts/complaint-form-script.js"></script>
   
