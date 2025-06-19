@@ -65,14 +65,21 @@ router.post('/', (req, res) => {
 });
 
 // Add: logout 
-router.post("/logout", (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            return res.status(500).json({ message: "Logout failed" });
-        }
-        res.clearCookie("connect.sid"); // ✅ Clears session cookie
-        res.status(200).json({ message: "Logged out successfully!" });
-    });
+router.post("/logout", async (req, res) => {
+    try {
+        if (!req.session.user) return res.status(401).json({ message: "Not logged in!" });
+
+        await UserSession.deleteOne({ userId: req.session.user.id }); // ✅ Remove session from MongoDB
+
+        req.session.destroy(err => {
+            if (err) return res.status(500).json({ message: "Logout failed" });
+            res.clearCookie("connect.sid"); // ✅ Clears session cookie
+            res.status(200).json({ message: "Logged out successfully!" });
+        });
+    } catch (error) {
+        console.error("❌ Logout error:", error);
+        res.status(500).json({ message: "Error logging out", details: error.message });
+    }
 });
 // Added: logout
 
