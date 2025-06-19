@@ -36,7 +36,6 @@ npm install
 npm start
 ```
 
-Visit http://localhost:3000 to access the portal.
 ## 💡 Contribution Guidelines
 We welcome contributions! If you'd like to improve the system:
 - Fork the repository
