@@ -37,12 +37,17 @@ app.use(cors({
     credentials: true  // ✅ Enables session cookies
 }));
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
 // ✅ Import Routes
 const registerRoute = require("./routes/register_route");
 const resetRoute = require("./routes/reset_route");
 const loginRoute = require("./routes/login_route");
 const adminRegisterRoute = require("./routes/admin_route");
 const adminRequest = require("./routes/admin_request");
+const adminLoginRoute = require('./routes/admin_login_route');
 
 // ✅ Route Setup
 app.use("/register", registerRoute);
@@ -50,6 +55,7 @@ app.use("/reset", resetRoute);
 app.use("/login", loginRoute);
 app.use("/admin", adminRegisterRoute);
 app.use("/admin-request", adminRequest);
+app.use('/admin', adminLoginRoute);
 
 // console.log("MongoDB URI:", process.env.MONGO_URI);
 
