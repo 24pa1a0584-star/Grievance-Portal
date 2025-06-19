@@ -45,11 +45,11 @@ router.post('/check', async (req, res) => {
             email: user.email,  
             faculty: user.faculty,  
             regno: user.registrationNumber,  
-            loginTime: new Date() // ✅ Store login timestamp
+            loginTime: new Date() // Store login timestamp
         };
 
         sessionData= req.session.user 
-        sessionLoad= sessionData; // ✅ Attach to session
+        sessionLoad= sessionData; // Attach to session
         console.log("✨ Session Data Variable:", sessionData);
 
         // 🔥 Save session details to MongoDB (`userSession` collection)
@@ -67,7 +67,7 @@ router.post('/check', async (req, res) => {
         global.userSessions[user._id] = req.session.user;
         console.log("✅ Session stored:", req.session.user);
 
-        await newSession.save(); // ✅ Insert session into MongoDB
+        await newSession.save(); // Insert session into MongoDB
 
         res.status(200).json({ message: "Login successful!", user: req.session.user });
 
@@ -135,7 +135,7 @@ router.get("/global-session", async (req, res) => {
 
         console.log("✅ Sending global session data:", globalSessionData);
 
-        // ✅ Send structured data to frontend
+        // Send structured data to frontend
         res.status(200).json({
             success: true,
             message: "Global session data retrieved successfully.",

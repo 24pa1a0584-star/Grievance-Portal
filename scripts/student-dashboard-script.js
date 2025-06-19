@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // ✅ Fetch session info from global-session route
+  // Fetch session info from global-session route
   fetch("http://localhost:5000/login/latest-session", {
     method: "GET",
     credentials: "include"
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const user = response.data;
         console.log("👤 Logged in as:", user.name);
         
-        // ✅ Update DOM elements
+        // Update DOM elements
         document.getElementById("name").textContent = user.name;
         document.getElementById("username").textContent = user.regno;
         document.getElementById("faculty").textContent = user.faculty;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// ✅ Logout button handler
+// Logout button handler
 document.getElementById("logout").addEventListener("click", async function () {
   try {
     const response = await fetch("http://localhost:5000/login/logout", {

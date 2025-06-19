@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
-global.userSessions = {}; // ✅ Global JSON variable to store session data
+global.userSessions = {}; // Global JSON variable to store session data
 const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -10,10 +10,10 @@ const app = express();
 const port = process.env.PORT || 5000;
 // Added: cors
 app.use(cors({
-    origin: "http://127.0.0.1:5500", // ✅ Ensure it matches your frontend URL
+    origin: "http://127.0.0.1:5500", // Ensure it matches your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
-    credentials: true  // ✅ Enables session cookies
+    credentials: true  // Enables session cookies
 }));
 
 // Add: the session
@@ -22,8 +22,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ 
-        mongoUrl: process.env.MONGO_URI, // ✅ Connects sessions to MongoDB
-        collectionName: "sessions", // ✅ Stores session data in "sessions" collection
+        mongoUrl: process.env.MONGO_URI, // Connects sessions to MongoDB
+        collectionName: "sessions", // Stores session data in "sessions" collection
         ttl: 20 * 60 
     }),
     cookie: {
@@ -36,13 +36,13 @@ app.use(session({
 
 app.use(express.json());
 const path = require("path");
-// app.use("/pages", express.static(path.join(__dirname, "../pages"))); // ✅ Access files outside project-root
+// app.use("/pages", express.static(path.join(__dirname, "../pages"))); // Access files outside project-root
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 
-// ✅ Import Routes
+// Import Routes
 const registerRoute = require("./routes/register_route");
 const resetRoute = require("./routes/reset_route");
 const loginRoute = require("./routes/login_route");
@@ -51,7 +51,7 @@ const adminRequest = require("./routes/admin_request");
 const adminLoginRoute = require('./routes/admin_login_route');
 const complaintRoute= require('./routes/complaint_route');
 
-// ✅ Route Setup
+// Route Setup
 app.use("/register", registerRoute);
 app.use("/reset", resetRoute);
 app.use("/login", loginRoute);
@@ -62,7 +62,7 @@ app.use('/send-complaint', complaintRoute);
 
 // console.log("MongoDB URI:", process.env.MONGO_URI);
 
-// ✅ Connect to MongoDB
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     // useNewUrlParser: true,
     // useUnifiedTopology: true
@@ -73,7 +73,7 @@ mongoose.connect(process.env.MONGO_URI, {
     console.error("MongoDB Connection Error:", error);
 });
 
-// ✅ Start Server
+// Start Server
 app.listen(port, () => {
     console.log(`🚀 Server running on port ${port}`);
 });
