@@ -49,6 +49,7 @@ const loginRoute = require("./routes/login_route");
 const adminRegisterRoute = require("./routes/admin_route");
 const adminRequest = require("./routes/admin_request");
 const adminLoginRoute = require('./routes/admin_login_route');
+const complaintRoute= require('./routes/complaint_route');
 
 // ✅ Route Setup
 app.use("/register", registerRoute);
