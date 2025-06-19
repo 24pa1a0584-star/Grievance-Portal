@@ -47,11 +47,6 @@ router.post('/check', async (req, res) => {
             loginTime: new Date() // ✅ Store login timestamp
         };
 
-        // 🔥 Save session globally
-        global.userSessions[user._id] = req.session.user;
-
-        console.log("✅ Session stored:", req.session.user);
-
         // 🔥 Save session details to MongoDB (`userSession` collection)
         const newSession = new UserSession({
             userId: user._id,
@@ -62,6 +57,10 @@ router.post('/check', async (req, res) => {
             sessionData: req.session.user,
             loginTime: req.session.user.loginTime
         });
+
+        // 🔥 Save session globally
+        global.userSessions[user._id] = req.session.user;
+        console.log("✅ Session stored:", req.session.user);
 
         await newSession.save(); // ✅ Insert session into MongoDB
 
@@ -129,10 +128,10 @@ router.get("/latest-session", async (req, res) => {
 
 router.get("/global-session", async (req, res) => {
     try {
-        if (!req.session.user) {
-            console.error("❌ No session found! Redirecting user.");
-            return res.status(401).json({ message: "Not logged in." });
-        }
+        // if (!req.session.user) {
+        //     console.error("❌ No session found! Redirecting user.");
+        //     return res.status(401).json({ message: "Not logged in." });
+        // }
 
         const userId = req.session.user.id;
 
@@ -145,11 +144,21 @@ router.get("/global-session", async (req, res) => {
         }
 
         console.log("✅ Sending global session data:", globalSessionData);
-        res.status(200).json(globalSessionData);
+
+        // ✅ Send structured data to frontend
+        res.status(200).json({
+            success: true,
+            message: "Global session data retrieved successfully.",
+            data: globalSessionData
+        });
 
     } catch (error) {
         console.error("❌ Error fetching global session:", error);
-        res.status(500).json({ message: "Error retrieving global session.", details: error.message });
+        res.status(500).json({
+            success: false,
+            message: "Error retrieving global session.",
+            details: error.message
+        });
     }
 });
 
