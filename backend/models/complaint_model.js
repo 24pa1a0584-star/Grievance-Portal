@@ -44,15 +44,10 @@ const complaintSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-<<<<<<< HEAD
   updatedAt: {
     type: Date,
     default: Date.now,
   },
-=======
-  studentName: { type: String },
-studentFaculty: { type: String },
->>>>>>> 8840ef71b6ae4e23e608033c491bd03ca87e5dff
 });
 
 module.exports = mongoose.model("Complaint", complaintSchema);

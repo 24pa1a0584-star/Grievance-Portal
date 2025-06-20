@@ -1,12 +1,12 @@
 const express=require('express');
 const bcrypt = require('bcryptjs');
-const Admin = require('../models/Admin');
+const Admin = require('../models/Admin'); // Assuming you have an Admin model
 const router = express.Router();
 
 
 router.post('/data', async (req, res) => {
     try {
-        console.log("Received registration request:", req.body); 
+        console.log("Received registration request:", req.body); // Debugging log
 
         const { fullname, email, password, position, phonenumber, faculty, department } = req.body;
         if (!fullname || !email || !password || !position || !phonenumber) {
@@ -20,7 +20,7 @@ router.post('/data', async (req, res) => {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        console.log("Hashed password:", hashedPassword); 
+        console.log("Hashed password:", hashedPassword); // Debugging log
 
         const newUser = new Admin({
             fullname, email, password : hashedPassword, position, phonenumber
@@ -29,7 +29,7 @@ router.post('/data', async (req, res) => {
         await newUser.save();
         res.status(201).json({ message: "Admin registered successfully! Click OK to proceed login" });
     } catch (error) {
-        console.error("Error registering admin:", error); 
+        console.error("Error registering admin:", error); // Log error details
         res.status(500).json({ error: "Error registering admin", details: error.message });
     }
 });
