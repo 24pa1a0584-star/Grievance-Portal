@@ -11,9 +11,9 @@ The Grievance Portal is designed to provide students with a seamless online plat
 - ✅ *Anonymous Reporting* – Special provisions for ragging complaints ensure confidentiality and campus safety.
 ## 🚀 Technologies Used
 - Backend: Node.js, Express.js
-- Database: MongoDB
-- Frontend: React.js / Vue.js (Optional: Specify your actual framework)
-- Authentication: JWT / OAuth (If applicable)
+- Database: MongoDB Atlas
+- Frontend: HTML, CSS, JS, Tailwind CSS(Optional: Specify your actual framework)
+- Authentication: JWT 
 ## 📌 Installation & Setup
 ### 🔹 Prerequisites
 - Install Node.js and MongoDB on your machine.
@@ -36,7 +36,6 @@ npm install
 npm start
 ```
 
-Visit http://localhost:3000 to access the portal.
 ## 💡 Contribution Guidelines
 We welcome contributions! If you'd like to improve the system:
 - Fork the repository

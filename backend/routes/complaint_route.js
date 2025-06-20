@@ -6,6 +6,12 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
+router.post("/test", (req, res) => {
+  console.log("🚀 Test route hit");
+  res.status(200).json({ message: "Test route works!" });
+});
+
+
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,7 +27,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Submit a complaint
+<<<<<<< HEAD
 router.post("/submit", verifyUserSession, upload.array("evidence"), async (req, res) => {
+=======
+router.post("/submit", upload.array("evidence"), async (req, res) => {
+    console.log("📥 Complaint submit route hit"); 
+>>>>>>> 8840ef71b6ae4e23e608033c491bd03ca87e5dff
   try {
     const user = req.session.user;
 
@@ -35,6 +46,15 @@ router.post("/submit", verifyUserSession, upload.array("evidence"), async (req, 
       url: `/uploads/${file.filename}`,
     }));
 
+
+            req.session.user = {  
+            id: user._id,  
+            name: user.fullName,  
+            email: user.email,  
+            faculty: user.faculty,  
+            regno: user.registrationNumber,  
+            loginTime: new Date() // ✅ Store login timestamp
+        };
     const complaint = new Complaint({
       studentId: user.id,
       title,
@@ -42,6 +62,8 @@ router.post("/submit", verifyUserSession, upload.array("evidence"), async (req, 
       priority,
       category,
       evidence,
+      studentName : user.name,
+      studentFaculty : user.faculty,
     });
 
     await complaint.save();
