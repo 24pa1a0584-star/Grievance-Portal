@@ -12,7 +12,7 @@ The Grievance Portal is designed to provide students with a seamless online plat
 ## 🚀 Technologies Used
 - Backend: Node.js, Express.js
 - Database: MongoDB
-- Frontend: React.js / Vue.js (Optional: Specify your actual framework)
+- Frontend: React.js / Basic- HTML,CSS,JS
 - Authentication: JWT / OAuth (If applicable)
 ## 📌 Installation & Setup
 ### 🔹 Prerequisites
@@ -36,7 +36,6 @@ npm install
 npm start
 ```
 
-Visit http://localhost:3000 to access the portal.
 ## 💡 Contribution Guidelines
 We welcome contributions! If you'd like to improve the system:
 - Fork the repository
