@@ -32,19 +32,18 @@ router.get("/session", (req, res) => {
 router.post('/check', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ $or: [{ email: username }, { registrationNumber: username }] });
+        const admin = await Admin.findOne({ email: username } );
 
-        if (!user) return res.status(404).json({ message: "User not found!" });
+        if (!admin) return res.status(404).json({ message: "User not found!" });
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, admin.password);
         if (!isMatch) return res.status(401).json({ message: "Invalid credentials!" });
 
-        req.session.user = {  
-            id: user._id,  
-            name: user.fullName,  
-            email: user.email,  
-            faculty: user.faculty,  
-            regno: user.registrationNumber,  
+        req.session.admin = {  
+            id: admin._id,  
+            name: admin.fullName,  
+            email: admin.email,  
+             
             loginTime: new Date() // ✅ Store login timestamp
         };
 
@@ -54,7 +53,7 @@ router.post('/check', async (req, res) => {
 
         // 🔥 Save session details to MongoDB (`userSession` collection)
         const newSession = new UserSession({
-            userId: user._id,
+            adminId: user._id,
             name: user.fullName,
             email: user.email,
             faculty: user.faculty,
