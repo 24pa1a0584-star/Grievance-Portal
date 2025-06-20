@@ -10,10 +10,12 @@ body {
 .navbar {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    padding: 10px 40px;
+    background: rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 1000;
 }
-
 .navbar a {
     color: white;
     text-decoration: none;
@@ -25,8 +27,8 @@ body {
 }
 
 .logo img {
-    height: 50px;
-    width: auto; 
+    height: 60px;
+    width: auto;
 }
 
 .content {
@@ -75,4 +77,45 @@ body {
 
 .buttons .register:hover {
     background-color: #0088cc;
+}
+.menu {
+    display: flex;
+    gap: 25px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+/* Responsive styles for mobiles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .menu {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .menu a {
+        width: 100%;
+        text-align: left;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
 }

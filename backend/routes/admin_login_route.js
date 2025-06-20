@@ -33,25 +33,39 @@ router.get("/session", verifyAdminSession, (req, res) => {
 router.post('/check', async (req, res) => {
     try {
         const { username, password } = req.body;
+<<<<<<< HEAD
         const admin = await Admin.findOne({ $or: [{ email: username }, { fullname: username }] });
 
         if (!admin) return res.status(404).json({ message: "Admin not found!" });
+=======
+        const admin = await Admin.findOne({ email: username } );
+
+        if (!admin) return res.status(404).json({ message: "User not found!" });
+>>>>>>> 21b09cd074f241c61190e0291efb42131b2a6208
 
         const isMatch = await bcrypt.compare(password, admin.password);
         if (!isMatch) return res.status(401).json({ message: "Invalid credentials!" });
 
         req.session.admin = {  
             id: admin._id,  
+<<<<<<< HEAD
             name: admin.fullname,  
             email: admin.email,  
             position: admin.position,  
             loginTime: new Date()
+=======
+            name: admin.fullName,  
+            email: admin.email,  
+             
+            loginTime: new Date() // ✅ Store login timestamp
+>>>>>>> 21b09cd074f241c61190e0291efb42131b2a6208
         };
 
         sessionData= req.session.admin 
         sessionLoad= sessionData;
         console.log("✨ Admin Session Data Variable:", sessionData);
 
+<<<<<<< HEAD
         // Save session details to MongoDB (`adminSession` collection)
         const newSession = new AdminSession({
             AdminId: admin._id,
@@ -59,6 +73,17 @@ router.post('/check', async (req, res) => {
             email: admin.email,
             sessionData: req.session.admin,
             loginTime: req.session.admin.loginTime
+=======
+        // 🔥 Save session details to MongoDB (`userSession` collection)
+        const newSession = new UserSession({
+            adminId: user._id,
+            name: user.fullName,
+            email: user.email,
+            faculty: user.faculty,
+            regno: user.registrationNumber,
+            sessionData: req.session.user,
+            loginTime: req.session.user.loginTime
+>>>>>>> 21b09cd074f241c61190e0291efb42131b2a6208
         });
 
         // Save admin session globally
