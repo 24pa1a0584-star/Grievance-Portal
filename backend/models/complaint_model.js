@@ -36,7 +36,15 @@ const complaintSchema = new mongoose.Schema({
     enum: ["Pending", "In Progress", "Resolved"],
     default: "Pending",
   },
+  adminResponse: {
+    type: String,
+    default: "",
+  },
   submittedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
     type: Date,
     default: Date.now,
   },

@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 // Added: cors
 app.use(cors({
-    origin: "http://127.0.0.1:5500", // Ensure it matches your frontend URL
+    origin: ["http://localhost:5500", "http://127.0.0.1:5500", "http://localhost:5000", "http://127.0.0.1:5000"], // Allow both ports
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
     credentials: true  // Enables session cookies
@@ -24,19 +24,26 @@ app.use(session({
     store: MongoStore.create({ 
         mongoUrl: process.env.MONGO_URI, // Connects sessions to MongoDB
         collectionName: "sessions", // Stores session data in "sessions" collection
-        ttl: 20 * 60 
+        ttl: 60 * 60 
     }),
     cookie: {
         secure: false, // true in production with HTTPS
-        httpOnly: true, // Prevents client-side access
-        maxAge: 20 * 60 * 1000 // 20 min
+        httpOnly: false, // Allow client-side access for debugging
+        maxAge: 60 * 60 * 1000, // 1 hour
+        sameSite: 'lax' // More permissive for testing
     }
 }));
 // Added session
 
 app.use(express.json());
 const path = require("path");
-// app.use("/pages", express.static(path.join(__dirname, "../pages"))); // Access files outside project-root
+
+// Serve static files from parent directory
+app.use(express.static(path.join(__dirname, "..")));
+app.use("/pages", express.static(path.join(__dirname, "../pages")));
+app.use("/scripts", express.static(path.join(__dirname, "../scripts")));
+app.use("/styles", express.static(path.join(__dirname, "../styles")));
+app.use("/src", express.static(path.join(__dirname, "../src")));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -55,7 +62,7 @@ const complaintRoute= require('./routes/complaint_route');
 app.use("/register", registerRoute);
 app.use("/reset", resetRoute);
 app.use("/login", loginRoute);
-app.use("/admin", adminRegisterRoute);
+app.use("/admin-register", adminRegisterRoute);
 app.use("/admin-request", adminRequest);
 app.use('/admin', adminLoginRoute);
 app.use('/send-complaint', complaintRoute);

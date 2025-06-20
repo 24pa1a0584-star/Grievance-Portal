@@ -31,12 +31,15 @@ function formatCategoryName(cat) {
   // Form Validation & Submission
   const form = document.getElementById("complaintForm");
 
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const title = document.getElementById("title").value.trim();
     const desc = description.value.trim();
+    const priority = document.getElementById("priority").value;
+    const files = document.getElementById("evidence").files;
 
+    // Validation
     if (title.length < 5) {
       alert("❗ Complaint Title must be at least 5 characters.");
       return;
@@ -47,8 +50,7 @@ function formatCategoryName(cat) {
       return;
     }
 
-    // Optional: file validation (size/type)
-    const files = document.getElementById("evidence").files;
+    // File validation (size/type)
     for (let file of files) {
       if (file.size > 10 * 1024 * 1024) {
         alert(`⚠️ ${file.name} exceeds 10MB limit.`);
@@ -56,15 +58,65 @@ function formatCategoryName(cat) {
       }
     }
 
-    // ✅ SUCCESS - Show animation
-    showSuccess();
-    form.reset();
-    charCount.textContent = "0";
+    // Get category from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category") || "general";
+
+    // Prepare form data for submission
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", desc);
+    formData.append("priority", priority);
+    formData.append("category", formatCategoryName(category));
+    
+    // Append files
+    for (let file of files) {
+      formData.append("evidence", file);
+    }
+
+    try {
+      // Show loading
+      const submitBtn = document.querySelector(".submit-btn");
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = "Submitting...";
+      submitBtn.disabled = true;
+
+      // Submit to backend
+      const response = await fetch("http://localhost:5000/send-complaint/submit", {
+        method: "POST",
+        body: formData,
+        credentials: "include" // Include session cookies
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        showSuccess();
+        form.reset();
+        charCount.textContent = "0";
+        document.getElementById("fileList").innerHTML = "";
+        
+        // Redirect to dashboard after 3 seconds
+        setTimeout(() => {
+          window.location.href = "http://localhost:5000/pages/student-dashboard.html";
+        }, 3000);
+      } else {
+        alert("❌ Error submitting complaint: " + result.message);
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("❌ Error submitting complaint. Please try again.");
+    } finally {
+      // Restore button
+      const submitBtn = document.querySelector(".submit-btn");
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
   });
 
   function showSuccess() {
     const successBox = document.createElement("div");
-    successBox.innerText = "🎉 Complaint Submitted Successfully!";
+    successBox.innerText = "🎉 Complaint Submitted Successfully! Redirecting to dashboard...";
     successBox.style.position = "fixed";
     successBox.style.top = "20px";
     successBox.style.left = "50%";
@@ -81,11 +133,13 @@ function formatCategoryName(cat) {
     setTimeout(() => {
       successBox.style.transition = "opacity 1s ease-out";
       successBox.style.opacity = 0;
-    }, 2000);
+    }, 2500);
 
     setTimeout(() => {
-      document.body.removeChild(successBox);
-    }, 3000);
+      if (document.body.contains(successBox)) {
+        document.body.removeChild(successBox);
+      }
+    }, 3500);
   }
 });
 

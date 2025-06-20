@@ -1,78 +1,158 @@
-const adminCategory = "Technical Issue"; // Simulated role-based access
-
-    const complaints = [
-      {
-        title: "Library WiFi Issues",
-        status: "In Progress",
-        priority: "Medium",
-        category: "Technical Issue",
-        student: "John Doe",
-        date: "2025-01-05",
-        updated: "2025-01-07",
-        response: "We are working on upgrading the network infrastructure."
-      },
-      {
-        title: "Hostel Air Conditioning",
-        status: "Resolved",
-        priority: "High",
-        category: "Hostel & Facility Issue",
-        student: "John Doe",
-        date: "2025-01-05",
-        updated: "2025-01-07",
-        response: "AC Unit has been repaired and is functioning."
-      },
-      {
-        title: "Scholarship Delay",
-        status: "Pending",
-        priority: "High",
-        category: "Financial & Scholarship",
-        student: "Jane Smith",
-        date: "2025-01-03",
-        updated: "2025-01-05",
-        response: ""
+document.addEventListener("DOMContentLoaded", function () {
+  // Fetch admin session info
+  fetch("http://localhost:5000/admin/latest-session", {
+    method: "GET",
+    credentials: "include"
+  })
+    .then(res => res.json())
+    .then(response => {
+      if (response.success) {
+        const admin = response.data;
+        console.log("👤 Admin logged in as:", admin.name);
+        
+        // Update DOM elements with admin info
+        const adminNameElement = document.getElementById("adminName");
+        const adminEmailElement = document.getElementById("adminEmail");
+        const adminPositionElement = document.getElementById("adminPosition");
+        
+        if (adminNameElement) adminNameElement.textContent = admin.name;
+        if (adminEmailElement) adminEmailElement.textContent = admin.email;
+        if (adminPositionElement) adminPositionElement.textContent = admin.position;
+        
+        loadComplaints();
+      } else {
+        alert("Session expired. Please login again.");
+        window.location.href = "http://localhost:5000/pages/admin-login.html";
       }
-    ];
+    })
+    .catch(error => {
+      console.error("❌ Admin session fetch error:", error);
+      alert("Session expired or not logged in.");
+      window.location.href = "http://localhost:5000/pages/admin-login.html";
+    });
+});
 
-    let total = 0, pending = 0, inProgress = 0, resolved = 0;
-    const container = document.getElementById("complaintList");
+// Load complaints function
+async function loadComplaints() {
+  const container = document.getElementById("complaintList");
+  
+  try {
+    // Show loading
+    if (container) {
+      container.innerHTML = "<p>Loading complaints...</p>";
+    }
+    
+    // Fetch all complaints for admin
+    const response = await fetch("http://localhost:5000/send-complaint/admin/all", {
+      method: "GET",
+      credentials: "include"
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const complaints = await response.json();
+    console.log("📋 Admin fetched complaints:", complaints);
+    
+    displayComplaints(complaints);
+    
+  } catch (error) {
+    console.error("Error fetching complaints:", error);
+    if (container) {
+      container.innerHTML = `<p>Error loading complaints: ${error.message}</p>`;
+    }
+    
+    // If unauthorized, redirect to admin login
+    if (error.message.includes('401')) {
+      alert("Admin session expired. Please login again.");
+      window.location.href = "http://localhost:5000/pages/admin-login.html";
+    }
+  }
+}
 
-    complaints.forEach((comp, index) => {
-      if (comp.category === adminCategory) {
-        total++;
-        if (comp.status === "Pending") pending++;
-        else if (comp.status === "In Progress") inProgress++;
-        else if (comp.status === "Resolved") resolved++;
+// Display complaints function
+function displayComplaints(complaints) {
 
-        const div = document.createElement("div");
-        div.className = "complaint";
-        div.innerHTML = `
-          <h4>${comp.title}</h4>
-          <span class="status ${comp.status.toLowerCase().replace(/ /g, '-')}">${comp.status}</span>
-          <span class="priority ${comp.priority.toLowerCase()}">${comp.priority} Priority</span>
-          <p><strong>Student:</strong> ${comp.student}</p>
-          <p><strong>Category:</strong> ${comp.category}</p>
-          <p><strong>Submitted:</strong> ${comp.date}</p>
-          <p><strong>Updated:</strong> ${comp.updated}</p>
-          <p><strong>Your Response:</strong> ${comp.response || 'No response yet.'}</p>
-          <button class="btn-manage" onclick="redirectToManage(${index})">
-            <span class="material-icons">visibility</span> Manage
-          </button>
-        `;
-        container.appendChild(div);
-      }
+  let total = 0, pending = 0, inProgress = 0, resolved = 0;
+  const container = document.getElementById("complaintList");
+  
+  if (!container) {
+    console.error("Complaint list container not found");
+    return;
+  }
+  
+  // Clear container
+  container.innerHTML = "";
+  
+  if (complaints.length === 0) {
+    container.innerHTML = "<p>No complaints found.</p>";
+    updateStatistics(0, 0, 0, 0);
+    return;
+  }
+  
+  complaints.forEach((comp, index) => {
+    total++;
+    if (comp.status === "Pending") pending++;
+    else if (comp.status === "In Progress") inProgress++;
+    else if (comp.status === "Resolved") resolved++;
+    
+    const submittedDate = new Date(comp.submittedAt).toLocaleDateString();
+    const studentName = comp.studentId ? (comp.studentId.fullName || 'Unknown Student') : 'Unknown Student';
+    
+    const div = document.createElement("div");
+    div.className = "complaint";
+    div.innerHTML = `
+      <h4>${comp.title}</h4>
+      <span class="status ${comp.status.toLowerCase().replace(/ /g, '-')}">${comp.status}</span>
+      <span class="priority ${comp.priority.toLowerCase()}">${comp.priority} Priority</span>
+      <p><strong>Student:</strong> ${studentName}</p>
+      <p><strong>Category:</strong> ${comp.category}</p>
+      <p><strong>Submitted:</strong> ${submittedDate}</p>
+      <p><strong>Description:</strong> ${comp.description.substring(0, 100)}${comp.description.length > 100 ? '...' : ''}</p>
+      <p><strong>Admin Response:</strong> ${comp.adminResponse || 'No response yet.'}</p>
+      <button class="btn-manage" onclick="redirectToManage('${comp._id}')">
+        <span class="material-icons">visibility</span> Manage
+      </button>
+    `;
+    container.appendChild(div);
+  });
+
+  updateStatistics(total, pending, inProgress, resolved);
+}
+
+// Update statistics function
+function updateStatistics(total, pending, inProgress, resolved) {
+  const totalEl = document.getElementById("totalCount");
+  const pendingEl = document.getElementById("pendingCount");
+  const inProgressEl = document.getElementById("inProgressCount");
+  const resolvedEl = document.getElementById("resolvedCount");
+  
+  if (totalEl) totalEl.innerText = total;
+  if (pendingEl) pendingEl.innerText = pending;
+  if (inProgressEl) inProgressEl.innerText = inProgress;
+  if (resolvedEl) resolvedEl.innerText = resolved;
+}
+
+// Redirect to manage complaint
+function redirectToManage(complaintId) {
+  localStorage.setItem("selectedComplaintId", complaintId);
+  window.location.href = "admin-view-complaint.html";
+}
+
+// Add logout functionality to window for global access
+window.logout = async function() {
+  try {
+    const response = await fetch("http://localhost:5000/admin/logout", {
+      method: "POST",
+      credentials: "include"
     });
 
-    document.getElementById("totalCount").innerText = total;
-    document.getElementById("pendingCount").innerText = pending;
-    document.getElementById("inProgressCount").innerText = inProgress;
-    document.getElementById("resolvedCount").innerText = resolved;
-
-    function redirectToManage(index) {
-      const selectedComplaint = complaints[index];
-      localStorage.setItem("selectedComplaint", JSON.stringify(selectedComplaint));
-      window.location.href = "admin-view-complaint.html";
-    }
-
-    function logout() {
-      alert("Logging out...");
-    }
+    const result = await response.json();
+    alert(result.message);
+    window.location.href = "http://localhost:5000/pages/admin-login.html";
+  } catch (error) {
+    console.error("Admin logout failed:", error);
+    alert("Logout failed. Please try again.");
+  }
+};

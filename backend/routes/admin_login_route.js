@@ -1,8 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const Admin = require('../models/Admin'); // Import User model
+const Admin = require('../models/Admin'); // Import Admin model
 const router = express.Router();
-const UserSession = require('../models/adminSession');
+const AdminSession = require('../models/adminSession');
+const { verifyAdminSession } = require('../middleware/sessionAuth');
 let sessionLoad= {};
 // login session
 // router.get('/session', (req, res) => {
@@ -17,59 +18,57 @@ let sessionLoad= {};
 //     res.status(200).json(req.session.user);
 // });
 
-router.get("/session", (req, res) => {
+router.get("/session", verifyAdminSession, (req, res) => {
     console.log("Session cookie data:", req.session.cookie); // ✅ Logs cookie details
     console.log("Stored session data:", req.session.user); // ✅ Logs user data
 
-    if (!req.session.user) {
-        return res.status(401).json({ message: "Session expired or not logged in." });
+    if (!req.session.admin) {
+        return res.status(401).json({ message: "Admin session expired or not logged in." });
     }
 
-    res.status(200).json({ cookie: req.session.cookie, user: req.session.user });
+    res.status(200).json({ cookie: req.session.cookie, admin: req.session.admin });
 });
 
 // Login Route
 router.post('/check', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ $or: [{ email: username }, { registrationNumber: username }] });
+        const admin = await Admin.findOne({ $or: [{ email: username }, { fullname: username }] });
 
-        if (!user) return res.status(404).json({ message: "User not found!" });
+        if (!admin) return res.status(404).json({ message: "Admin not found!" });
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, admin.password);
         if (!isMatch) return res.status(401).json({ message: "Invalid credentials!" });
 
-        req.session.user = {  
-            id: user._id,  
-            name: user.fullName,  
-            email: user.email,  
-            faculty: user.faculty,  
-            regno: user.registrationNumber,  
-            loginTime: new Date() // ✅ Store login timestamp
+        req.session.admin = {  
+            id: admin._id,  
+            name: admin.fullname,  
+            email: admin.email,  
+            position: admin.position,  
+            loginTime: new Date()
         };
 
-        sessionData= req.session.user 
-        sessionLoad= sessionData; // ✅ Attach to session
-        console.log("✨ Session Data Variable:", sessionData);
+        sessionData= req.session.admin 
+        sessionLoad= sessionData;
+        console.log("✨ Admin Session Data Variable:", sessionData);
 
-        // 🔥 Save session details to MongoDB (`userSession` collection)
-        const newSession = new UserSession({
-            userId: user._id,
-            name: user.fullName,
-            email: user.email,
-            faculty: user.faculty,
-            regno: user.registrationNumber,
-            sessionData: req.session.user,
-            loginTime: req.session.user.loginTime
+        // Save session details to MongoDB (`adminSession` collection)
+        const newSession = new AdminSession({
+            AdminId: admin._id,
+            name: admin.fullname,
+            email: admin.email,
+            sessionData: req.session.admin,
+            loginTime: req.session.admin.loginTime
         });
 
-        // 🔥 Save session globally
-        global.userSessions[user._id] = req.session.user;
-        console.log("✅ Session stored:", req.session.user);
+        // Save admin session globally
+        if (!global.adminSessions) global.adminSessions = {};
+        global.adminSessions[admin._id] = req.session.admin;
+        console.log("✅ Admin Session stored:", req.session.admin);
 
         await newSession.save(); // ✅ Insert session into MongoDB
 
-        res.status(200).json({ message: "Login successful!", user: req.session.user });
+        res.status(200).json({ message: "Admin login successful!", admin: req.session.admin, isAdmin: true });
 
     } catch (error) {
         console.error("❌ Login error:", error);
@@ -85,10 +84,10 @@ router.post('/', (req, res) => {
 // Add: logout 
 router.post("/logout", async (req, res) => {
     try {
-        if (!req.session.user) return res.status(401).json({ message: "Not logged in!" });
+        if (!req.session.admin) return res.status(401).json({ message: "Admin not logged in!" });
 
-        delete global.userSessions[req.session.user.id]; // ✅ Remove user session from global storage
-        await UserSession.deleteOne({ userId: req.session.user.id }); // ✅ Remove session from MongoDB
+        delete global.adminSessions[req.session.admin.id];
+        await AdminSession.deleteOne({ AdminId: req.session.admin.id });
 
         req.session.destroy(err => {
             if (err) return res.status(500).json({ message: "Logout failed" });
@@ -103,7 +102,7 @@ router.post("/logout", async (req, res) => {
 });
 // Added: logout
 
-router.get("/latest-session", async (req, res) => {
+router.get("/latest-session", verifyAdminSession, (req, res) => {
     try {
         res.status(200).json({
             success: true,
@@ -116,17 +115,17 @@ router.get("/latest-session", async (req, res) => {
     }
 });
 
-router.get("/global-session", async (req, res) => {
+router.get("/global-session", verifyAdminSession, async (req, res) => {
     try {
         // if (!req.session.user) {
         //     console.error("❌ No session found! Redirecting user.");
         //     return res.status(401).json({ message: "Not logged in." });
         // }
 
-        const userId = req.session.user.id;
+        const adminId = req.session.admin.id;
 
-        // 🔥 Retrieve user session from global storage
-        const globalSessionData = global.userSessions[userId];
+        // Retrieve admin session from global storage
+        const globalSessionData = global.adminSessions ? global.adminSessions[adminId] : null;
 
         // if (!globalSessionData) {
         //     console.error("❌ No global session found!");

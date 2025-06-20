@@ -28,15 +28,15 @@
   <p class="text-gray-600 mb-8">Sign in to manage the system</p>
 
   <!-- Login Form -->
-  <form id="adminLoginForm" class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md space-y-5" method="POST" autocomplete="off">
+  <form id="adminLoginForm" class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md space-y-5" autocomplete="off">
     
     <!-- Username -->
     <div>
-      <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+      <label for="adminUsername" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
       <input
         type="text"
-        id="username"
-        name="username"
+        id="adminUsername"
+        name="adminUsername"
         placeholder="Enter admin username"
         class="w-full border border-gray-300 rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
         required
@@ -45,15 +45,21 @@
 
     <!-- Password -->
     <div>
-      <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+      <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
       <input
         type="password"
-        id="password"
-        name="password"
+        id="adminPassword"
+        name="adminPassword"
         placeholder="Enter password"
         class="w-full border border-gray-300 rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
         required
       />
+      <div class="mt-2">
+        <label class="flex items-center">
+          <input type="checkbox" id="togglePassword" class="mr-2">
+          <span class="text-sm text-gray-600">Show password</span>
+        </label>
+      </div>
     </div>
 
     <!-- Submit Button -->
