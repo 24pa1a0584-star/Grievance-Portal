@@ -2,4 +2,3 @@
 
 *.hintrc
 backend/node_modules*/
-backend/uploads*/

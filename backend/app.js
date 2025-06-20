@@ -35,7 +35,6 @@ app.use(session({
 }));
 // Added session
 
-
 app.use(express.json());
 const path = require("path");
 
