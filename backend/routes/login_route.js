@@ -3,10 +3,11 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User'); // Import User model
 const router = express.Router();
 const UserSession = require('../models/userSession');
+const { verifyUserSession } = require('../middleware/sessionAuth');
 let sessionLoad= {};
 // login session
 // router.get('/session', (req, res) => {
-//     console.log("Session data in backend:", req.session); // ✅ Debugging log
+//     console.log("Session data in backend:", req.session); // Debugging log
 
 //     if (!req.session.user) {
 //         console.error("❌ Session not found! Redirecting user.");
@@ -17,9 +18,9 @@ let sessionLoad= {};
 //     res.status(200).json(req.session.user);
 // });
 
-router.get("/session", (req, res) => {
-    console.log("Session cookie data:", req.session.cookie); // ✅ Logs cookie details
-    console.log("Stored session data:", req.session.user); // ✅ Logs user data
+router.get("/session", verifyUserSession, (req, res) => {
+    console.log("Session cookie data:", req.session.cookie); // Logs cookie details
+    console.log("Stored session data:", req.session.user); // Logs user data
 
     if (!req.session.user) {
         return res.status(401).json({ message: "Session expired or not logged in." });
@@ -45,11 +46,11 @@ router.post('/check', async (req, res) => {
             email: user.email,  
             faculty: user.faculty,  
             regno: user.registrationNumber,  
-            loginTime: new Date() // ✅ Store login timestamp
+            loginTime: new Date() // Store login timestamp
         };
 
         sessionData= req.session.user 
-        sessionLoad= sessionData; // ✅ Attach to session
+        sessionLoad= sessionData; // Attach to session
         console.log("✨ Session Data Variable:", sessionData);
 
         // 🔥 Save session details to MongoDB (`userSession` collection)
@@ -67,7 +68,7 @@ router.post('/check', async (req, res) => {
         global.userSessions[user._id] = req.session.user;
         console.log("✅ Session stored:", req.session.user);
 
-        await newSession.save(); // ✅ Insert session into MongoDB
+        await newSession.save(); // Insert session into MongoDB
 
         res.status(200).json({ message: "Login successful!", user: req.session.user });
 
@@ -87,12 +88,12 @@ router.post("/logout", async (req, res) => {
     try {
         if (!req.session.user) return res.status(401).json({ message: "Not logged in!" });
 
-        delete global.userSessions[req.session.user.id]; // ✅ Remove user session from global storage
-        await UserSession.deleteOne({ userId: req.session.user.id }); // ✅ Remove session from MongoDB
+        delete global.userSessions[req.session.user.id]; // Remove user session from global storage
+        await UserSession.deleteOne({ userId: req.session.user.id }); // Remove session from MongoDB
 
         req.session.destroy(err => {
             if (err) return res.status(500).json({ message: "Logout failed" });
-            res.clearCookie("connect.sid"); // ✅ Clears session cookie
+            res.clearCookie("connect.sid"); // Clears session cookie
             res.status(200).json({ message: "Logged out successfully!" });
         });
 
@@ -103,12 +104,35 @@ router.post("/logout", async (req, res) => {
 });
 // Added: logout
 
-router.get("/latest-session", async (req, res) => {
+// Debug route without middleware
+router.get("/debug-session", (req, res) => {
+    console.log("🔍 Debug session check:", {
+        hasSession: !!req.session,
+        sessionUser: req.session.user,
+        sessionId: req.sessionID,
+        cookies: req.headers.cookie,
+        userAgent: req.headers['user-agent'],
+        origin: req.headers.origin,
+        referer: req.headers.referer
+    });
+    
+    res.json({
+        hasSession: !!req.session,
+        hasUser: !!req.session.user,
+        sessionId: req.sessionID,
+        user: req.session.user || null,
+        cookies: req.headers.cookie,
+        timestamp: new Date().toISOString()
+    });
+});
+
+router.get("/latest-session", verifyUserSession, (req, res) => {
     try {
+        console.log("✅ Latest session endpoint called, session user:", req.session.user);
         res.status(200).json({
             success: true,
-            message: "Global session data retrieved successfully.",
-            data: sessionLoad
+            message: "Session data retrieved successfully.",
+            data: req.session.user
         });
     } catch (error) {
         console.error("❌ Error fetching latest session data:", error);
@@ -116,26 +140,26 @@ router.get("/latest-session", async (req, res) => {
     }
 });
 
-router.get("/global-session", async (req, res) => {
+router.get("/global-session", verifyUserSession, async (req, res) => {
     try {
-        // if (!req.session.user) {
-        //     console.error("❌ No session found! Redirecting user.");
-        //     return res.status(401).json({ message: "Not logged in." });
-        // }
+        if (!req.session.user) {
+            console.error("❌ No session found! Redirecting user.");
+            return res.status(401).json({ message: "Not logged in." });
+        }
 
         const userId = req.session.user.id;
 
-        // 🔥 Retrieve user session from global storage
+        // Retrieve user session from global storage
         const globalSessionData = global.userSessions[userId];
 
-        // if (!globalSessionData) {
-        //     console.error("❌ No global session found!");
-        //     return res.status(404).json({ message: "Session not found in global storage." });
-        // }
+        if (!globalSessionData) {
+            console.error("❌ No global session found!");
+            return res.status(404).json({ message: "Session not found in global storage." });
+        }
 
         console.log("✅ Sending global session data:", globalSessionData);
 
-        // ✅ Send structured data to frontend
+        // Send structured data to frontend
         res.status(200).json({
             success: true,
             message: "Global session data retrieved successfully.",

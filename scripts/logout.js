@@ -7,7 +7,7 @@ document.getElementById("logout").addEventListener("click", async function() {
 
         const result = await response.json();
         alert(result.message);
-        window.location.href = "http://localhost:5500/pages/login.html"; // ✅ Redirect after logout
+        window.location.href = "http://localhost:5000/pages/login.html"; // Redirect after logout
     } catch (error) {
         console.error("Logout failed:", error);
     }

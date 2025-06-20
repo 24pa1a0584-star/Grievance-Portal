@@ -36,12 +36,18 @@ const complaintSchema = new mongoose.Schema({
     enum: ["Pending", "In Progress", "Resolved"],
     default: "Pending",
   },
+  adminResponse: {
+    type: String,
+    default: "",
+  },
   submittedAt: {
     type: Date,
     default: Date.now,
   },
-  studentName: { type: String },
-studentFaculty: { type: String },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Complaint", complaintSchema);

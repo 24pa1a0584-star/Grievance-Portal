@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(formData),
-                    credentials: "include" // ✅ Ensures session cookies are sent
+                    credentials: "include" // Ensures session cookies are sent
                 });
 
                 const result = await response.json();
@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (response.status === 200) {
                     alert(result.message);
                     
-                    // ✅ Update the redirect path to point to the backend
+                    // Redirect based on user type - use same port as backend
                     const dashboardPath = result.isAdmin 
-                ? "/pages/admin-dashboard.html" 
-                : "/pages/student-dashboard.html"; 
+                        ? "http://localhost:5000/pages/admin-dashboard.html" 
+                        : "http://localhost:5000/pages/student-dashboard.html"; 
 
-                window.location.href = window.location.origin + dashboardPath;
+                    window.location.href = dashboardPath;
 
                     console.log("Redirecting to:", window.location.origin + dashboardPath);
                 } else {
