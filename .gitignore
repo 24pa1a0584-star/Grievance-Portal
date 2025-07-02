@@ -1,6 +1,4 @@
-# ignore these files 
-
 *.hintrc
-backend/node_modules*/
-backend/uploads*/
-*backend/.env
+backend/node_modules/
+backend/uploads/
+backend/.env
